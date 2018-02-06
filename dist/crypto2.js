@@ -94,23 +94,34 @@ var aes256cbcEncrypt = function aes256cbcEncrypt(text, password, callback) {
 };
 
 var aes256cbcDecrypt = function aes256cbcDecrypt(text, password, callback) {
-  var decipher = crypto.createDecipher('aes-256-cbc', password);
+  //var decipher = crypto.createDecipher('aes-256-cbc', password); //ORIGINAL
+  var decipher = crypto.createDecipher('aes-128-gcm', password); //Added by David
 
-  processStream(decipher, text, { from: 'hex', to: 'utf8' }, callback);
+  //processStream(decipher, text, { from: 'hex', to: 'utf8' }, callback); //ORIGINAL 
+  processStream(decipher, text, { from: 'utf8', to: 'base64' }, callback); //Added by David
 };
 
-var rsaEncrypt = function rsaEncrypt(text, publicKey, callback) {
+var rsaEncrypt = function rsaEncrypt(text, publicKey, options, callback) {
   process.nextTick(function () {
     var key = new NodeRSA(publicKey);
+
+    if (options) {
+      key.setOptions(options);
+    }
+
     var encryptedText = key.encrypt(text, 'base64', 'utf8');
 
     callback(null, encryptedText);
   });
 };
 
-var rsaDecrypt = function rsaDecrypt(text, privateKey, callback) {
+var rsaDecrypt = function rsaDecrypt(text, privateKey, options, callback) {
   process.nextTick(function () {
     var key = new NodeRSA(privateKey);
+
+    if (options) {
+      key.setOptions(options);
+    }
 
     var decryptedText = void 0;
 
