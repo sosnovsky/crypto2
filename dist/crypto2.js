@@ -143,7 +143,7 @@ var sha256Sign = function sha256Sign(text, privateKey, callback) {
       return callback(err);
     }
 
-    var signature = sign.sign(privateKey, 'hex');
+    var signature = sign.sign(privateKey, 'base64'); // David change 'hex' to 'base64'
 
     callback(null, signature);
   });
@@ -157,7 +157,7 @@ var sha256Verify = function sha256Verify(text, publicKey, signature, callback) {
       return callback(err);
     }
 
-    var isSignatureValid = verify.verify(publicKey, signature, 'hex');
+    var isSignatureValid = verify.verify(publicKey, signature, 'base64'); // David change 'hex' to 'base64'
 
     callback(null, isSignatureValid);
   });
