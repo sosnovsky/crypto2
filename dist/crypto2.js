@@ -16,7 +16,7 @@ var createPassword = function createPassword(callback) {
     if (err) {
       return callback(err);
     }
-    callback(null, buffer.toString('base64'));
+    callback(undefined, buffer.toString('base64'));
   });
 };
 
@@ -29,7 +29,7 @@ var createKeyPair = function createKeyPair(callback) {
     var privateKey = key.exportKey(),
         publicKey = key.exportKey('public');
 
-    callback(null, privateKey, publicKey);
+    callback(undefined, privateKey, publicKey);
   });
 };
 
@@ -41,7 +41,7 @@ var readKey = function readKey(pemFile, keyType, callback) {
 
     var key = new NodeRSA(data);
 
-    callback(null, key.exportKey(keyType));
+    callback(undefined, key.exportKey(keyType));
   });
 };
 
@@ -65,12 +65,12 @@ var processStream = function processStream(cipher, text, options, callback) {
 
     cipher.once('end', function () {
       cipher.removeAllListeners();
-      callback(null, result);
+      callback(undefined, result);
     });
   } else {
     cipher.once('finish', function () {
       cipher.removeAllListeners();
-      callback(null, result);
+      callback(undefined, result);
     });
   }
 
@@ -111,7 +111,7 @@ var rsaEncrypt = function rsaEncrypt(text, publicKey, options, callback) {
 
     var encryptedText = key.encrypt(text, 'base64', 'utf8');
 
-    callback(null, encryptedText);
+    callback(undefined, encryptedText);
   });
 };
 
@@ -131,7 +131,7 @@ var rsaDecrypt = function rsaDecrypt(text, privateKey, options, callback) {
       return callback(ex);
     }
 
-    callback(null, decryptedText);
+    callback(undefined, decryptedText);
   });
 };
 
@@ -145,7 +145,7 @@ var sha256Sign = function sha256Sign(text, privateKey, callback) {
 
     var signature = sign.sign(privateKey, 'base64'); // David change 'hex' to 'base64'
 
-    callback(null, signature);
+    callback(undefined, signature);
   });
 };
 
@@ -159,7 +159,7 @@ var sha256Verify = function sha256Verify(text, publicKey, signature, callback) {
 
     var isSignatureValid = verify.verify(publicKey, signature, 'base64'); // David change 'hex' to 'base64'
 
-    callback(null, isSignatureValid);
+    callback(undefined, isSignatureValid);
   });
 };
 
